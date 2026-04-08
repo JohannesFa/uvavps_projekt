@@ -71,7 +71,6 @@ def run_model(model: str, df: pd.DataFrame):
 
 
 
-
     
 
 

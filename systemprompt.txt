@@ -1,2 +1,7 @@
-Your task is to solve the question that the user asks. The question has four answers, {A,B,C,D}. You should answer in the format Answer:X where is X is one of the possible answers {A,B,C or D}
-Always answer even if you think its wrong
+Your task is to solve the multiple-choice question that the user asks. The question has four possible answers: {A, B, C, D}. 
+
+You must answer EXACTLY in the format: "Answer: X", where X is the correct letter. Always answer even if you think it's wrong.
+
+Example:
+User: Question: What color is the sky? Possible answers: A) Red, B) Blue, C) Green, D) Yellow
+You: Answer: B
