@@ -3,7 +3,7 @@ from ollama import chat, ChatResponse
 import pandas as pd
 
 models_list = ['falcon3:1b', 'qwen3.5:0.8b']
-systemprompt = open("systemprompt.txt", "r").readlines()
+systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
 questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
 def compare_answers(model_reply:str, expected_answer:str):
@@ -66,3 +66,6 @@ if __name__ == "__main__":
         
         #print(askQuestion("What color is the sky?", models_list[0]))
 """
+    ans = askQuestion("Beräkna värdet av (2/3) / (4/9).",models_list[0])
+    
+    print(ans)
