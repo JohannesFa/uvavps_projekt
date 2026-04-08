@@ -59,7 +59,7 @@ def run_model(model: str, df: pd.DataFrame):
         message = f" Question : {question}, Possible answers: {available_answers}"
         print(message)
         ai_reply = askQuestion(msg=message, model=model)
-        file.write(f"res_{model}.csv,\n")
+        file.write(f"res_{model},\n")
     file.close()
 
 
