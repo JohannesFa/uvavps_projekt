@@ -50,7 +50,7 @@ def askQuestion(msg:str, model:str) -> str:
     return response.message.content
 
 def run_model(model: str, df: pd.DataFrame):
-    file = open(f"res_{model}.csv", "w")
+    file = open(f"res_{model.replace(":","_")}.csv", "w")
     file.write(f"{model},\n")  
 
     for row in df.iterrows():
