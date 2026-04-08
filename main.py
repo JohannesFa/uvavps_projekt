@@ -50,16 +50,16 @@ def askQuestion(msg:str, model:str) -> str:
     return response.message.content
 
 def run_model(model: str, df: pd.DataFrame):
-    with open(f"{model}.csv", "w") as f:
-        f.write(f"{model},\n")
+    file = open(f"{model}.csv", "w")
+    file.write(f"{model},\n")  
 
     for row in df.iterrows():
         question = row[1]["Question"]
         available_answers = row[1]["Possible Answers"]
         message = f" Question : {question}, Alternatives: {available_answers}"
         ai_reply = askQuestion(msg=message, model=model)
-        with open(f"{model}.csv", "a") as f:
-            f.write(f"{ai_reply},\n")
+        file.write(f"{ai_reply},\n")
+    file.close()
 
 
 
