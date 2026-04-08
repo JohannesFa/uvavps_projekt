@@ -54,7 +54,11 @@ def askQuestion(msg:str, model:str) -> str:
     ])
     return response.message.content
 
-def run_model(model: str, df: pd.DataFrame):
+def test_all_models(models_list: list, df : DataFrame) :
+    for model in models_list:
+        run_model(model, df)
+
+def run_model(model: str, df: DataFrame):
     with open(f"res_{model.replace(":","_")}.csv", "w+") as file:
         file.write(f"{model},\n")
 
@@ -83,9 +87,9 @@ if __name__ == "__main__":
 
     check_if_models_exist(models_list)
 
-    questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+    questionsdf: DataFrame = pd.read_csv("questions.csv",delimiter=";")
     
-    run_model(models_list[1],questionsdf)
+    run_model(models_list[0],questionsdf)
     """
     for row in questionsdf.iterrows():
         #print(row)

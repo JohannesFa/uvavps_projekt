@@ -11,13 +11,13 @@ Question;Possible Answers;Answer
 "Vilket tal ligger exakt mitt emellan 1/4 och 1/2?";"A: 1/3, B: 3/8, C: 5/8, D: 2/3";B
 "Om f(x) = 2x^2 - 3, vad är f(2)?";"A: 1, B: 5, C: 7, D: 13";B
 "Lös ut y ur ekvationen 2x + 4y = 12.";"A: y = 3 - 0.5x, B: y = 12 - 2x, C: y = 3 - 2x, D: y = 6 - x";A
-"KVA I: (x+y)^2 | KVA II: x^2 + y^2 (där x,y > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
-"KVA I: Sannolikheten att få en 6:a vid ett tärningskast | KVA II: 1/5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";B
-"KVA I: Omkretsen av en kvadrat med area 16 | KVA II: 16";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
-"KVA I: x^3 | KVA II: x^2 (där x är ett reellt tal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";D
-"KVA I: 15 % av 200 | KVA II: 25 % av 120";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
-"KVA I: Värdet av roten ur 50 | KVA II: 7";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
-"KVA I: Medelvärdet av a, b, c | KVA II: b (där a, b, c är på varandra följande heltal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
-"KVA I: x om 2^x = 32 | KVA II: 5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
-"KVA I: Arean av en rätvinklig triangel med kateterna 3 och 4 | KVA II: 6";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
-"KVA I: x/0.5 | KVA II: 2x (där x > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= (x+y)^2 | II= x^2 + y^2 (där x,y > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
+"K= Sannolikheten att få en 6:a vid ett tärningskast | II= 1/5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";B
+"I= Omkretsen av en kvadrat med area 16 | II= 16";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= x^3 | II= x^2 (där x är ett reellt tal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";D
+"I= 15 % av 200 | II= 25 % av 120";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= Värdet av roten ur 50 | II= 7";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
+"I= Medelvärdet av a, b, c | II= b (där a, b, c är på varandra följande heltal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= x om 2^x = 32 | II= 5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= Arean av en rätvinklig triangel med kateterna 3 och 4 | II= 6";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"I= x/0.5 | II= 2x (där x > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
