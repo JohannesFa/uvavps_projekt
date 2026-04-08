@@ -5,35 +5,6 @@ import pandas as pd
 models_list = ['falcon3:1b', 'qwen3.5:0.8b']
 questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
-def run_model(model: str) :
-    ollama_list = list()
-    installed_models_list = []
-    for x in ollama_list['models'] :
-        installed_models_list.append(x['model'])
-    if model not in installed_models_list:
-        print(f"Model {model} not installed or misspelled")
-        return
-    file_out = open("results.csv", "w")
-    file_out.write(f"{model},")
-    file_out.close()
-
-
-def check_if_models_exist(model_list: list) :
-    ollama_list = ollama.list()
-    installed_models = []
-    for x in ollama_list['models'] :
-        installed_models.append(x['model'])
-
-
-    found_not_installed_model = False
-    for model in model_list:
-        if model not in installed_models:
-            print(f"Model {model} not installed or misspelled")
-            found_not_installed_model = True
-    if found_not_installed_model:
-        print("Exiting beacuse all models not installed")
-        exit()
-            
 
 def check_if_models_exist(model_list: list) :
     ollama_list = ollama.list()
@@ -53,7 +24,6 @@ def check_if_models_exist(model_list: list) :
             
 
 def askQuestion(question:str, model:str) -> str:
-    response: ChatResponse = chat(model=model, think=False, messages=[
     response: ChatResponse = chat(model=model, think=False, messages=[
     {
         'role': 'user',
