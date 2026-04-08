@@ -23,14 +23,33 @@ def check_if_models_exist(model_list: list) :
         exit()
             
 
-def askQuestion(question:str, model:str) -> str:
+def askQuestion(message:str, model:str) -> str:
     response: ChatResponse = chat(model=model, think=False, messages=[
     {
         'role': 'user',
-        'content': question,
+        'content': message,
     },
     ])
     return response.message.content
+
+def run_model(model: str, df: pd.DataFrame):
+    with open(f"{model}.csv", "w") as f:
+        f.write(f"{model},\n")
+
+    for row in df.iterrows():
+        question = row[1]["Question"]
+        available_answers = row[1]["Possible Answers"]
+        message = f" Question : {question} Alternatives: {available_answers}"
+        ai_reply = askQuestion(message=message, model=model)
+        with open(f"{model}.csv", "a") as f:
+            f.write(f"{ai_reply},\n")
+
+run_model(questionsdf)
+
+
+
+    
+
 
 
 
