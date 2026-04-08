@@ -1,6 +1,9 @@
 import ollama
-from ollama import chat, ChatResponse
+from ollama import Client
 import pandas as pd
+import re
+
+client = Client(host="127.0.0.1:11434")
 
 models_list = ['falcon3:1b', 'qwen3.5:0.8b']
 systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
@@ -20,7 +23,7 @@ def compare_answers(model_reply:str, expected_answer:str):
 
 
 def check_if_models_exist(model_list: list) :
-    ollama_list: list = ollama.list()
+    ollama_list: list = client.list()
     installed_models = []
     for x in ollama_list['models'] :
         installed_models.append(x['model'])
@@ -38,7 +41,7 @@ def check_if_models_exist(model_list: list) :
 
 def askQuestion(msg:str, model:str) -> str:
     global systemprompt
-    response: ChatResponse = chat(model=model, think='low', messages=[
+    response = client.chat(model=model, think='low', messages=[
     {
         'role': 'system',
         'content': systemprompt
