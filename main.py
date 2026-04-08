@@ -36,7 +36,7 @@ def check_if_models_exist(model_list: list) :
 
 def askQuestion(msg:str, model:str) -> str:
     global systemprompt
-    response: ChatResponse = chat(model=model, think=False, messages=[
+    response: ChatResponse = chat(model=model, think='low', messages=[
     {
         'role': 'system',
         'content': systemprompt
@@ -56,10 +56,14 @@ def run_model(model: str, df: pd.DataFrame):
     for row in df.iterrows():
         question = row[1]["Question"]
         available_answers = row[1]["Possible Answers"]
-        message = f" Question : {question}, Alternatives: {available_answers}"
+        message = f" Question : {question}, Possible answers: {available_answers}"
+        print(message)
         ai_reply = askQuestion(msg=message, model=model)
+        print(f"{ai_reply=}")
         with open(f"{model}.csv", "a") as f:
-            f.write(f"{ai_reply},\n")
+            write_str = f"{ai_reply},\n"
+            print(write_str)
+            f.write(write_str)
 
 
 
@@ -75,6 +79,7 @@ if __name__ == "__main__":
 
     questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
     
+    run_model(models_list[1],questionsdf)
     """
     for row in questionsdf.iterrows():
         #print(row)
