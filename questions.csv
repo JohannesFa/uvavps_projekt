@@ -1,0 +1,23 @@
+Fråga;Möjliga svar;Rätt Svar
+"Vilket värde har x om 3(x + 4) = 2x - 5?";"A: -17, B: -9, C: -1, D: 17";A
+"Beräkna värdet av (2/3) / (4/9).";"A: 8/27, B: 1/2, C: 3/2, D: 2";C
+"En rektangel har omkretsen 20 cm. Om en sida är 4 cm, vad är arean?";"A: 16 cm², B: 24 cm², C: 32 cm², D: 48 cm²";B
+"Vad är medelvärdet av talen 12, 15, 18, 21 och 24?";"A: 16, B: 18, C: 19, D: 20";B
+"Lös ekvationen x^2 - 9 = 0.";"A: x=3, B: x=-3, C: x=±3, D: x=9";C
+"Om 20 % av ett tal är 15, vad är 50 % av samma tal?";"A: 30, B: 37.5, C: 45, D: 75";B
+"Förenkla uttrycket 2(a + b) - (a - b).";"A: a + b, B: a + 3b, C: 3a + b, D: 3a + 3b";B
+"Vilket är det största primtalet som är mindre än 20?";"A: 13, B: 17, C: 19, D: 21";C
+"(Figur: Cirkel med radie r=3). Vad är cirkelns area?";"A: 3π, B: 6π, C: 9π, D: 12π";C
+"Vilket tal ligger exakt mitt emellan 1/4 och 1/2?";"A: 1/3, B: 3/8, C: 5/8, D: 2/3";B
+"Om f(x) = 2x^2 - 3, vad är f(2)?";"A: 1, B: 5, C: 7, D: 13";B
+"Lös ut y ur ekvationen 2x + 4y = 12.";"A: y = 3 - 0.5x, B: y = 12 - 2x, C: y = 3 - 2x, D: y = 6 - x";A
+"KVA I: (x+y)^2 | KVA II: x^2 + y^2 (där x,y > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
+"KVA I: Sannolikheten att få en 6:a vid ett tärningskast | KVA II: 1/5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";B
+"KVA I: Omkretsen av en kvadrat med area 16 | KVA II: 16";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"KVA I: x^3 | KVA II: x^2 (där x är ett reellt tal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";D
+"KVA I: 15 % av 200 | KVA II: 25 % av 120";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"KVA I: Värdet av roten ur 50 | KVA II: 7";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";A
+"KVA I: Medelvärdet av a, b, c | KVA II: b (där a, b, c är på varandra följande heltal)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"KVA I: x om 2^x = 32 | KVA II: 5";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"KVA I: Arean av en rätvinklig triangel med kateterna 3 och 4 | KVA II: 6";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
+"KVA I: x/0.5 | KVA II: 2x (där x > 0)";"A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras";C
