@@ -7,11 +7,13 @@ systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
 questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
 def compare_answers(model_reply:str, expected_answer:str):
-    if "Answer:" in model_reply:
+    if "answer:" in model_reply.lower():
         model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
         print(f"Model answer is {model_answer} expected is {expected_answer}")
         if model_answer == expected_answer.strip():
             return True
+        else:
+            return False
     else:
         return False
 
@@ -50,17 +52,22 @@ def askQuestion(msg:str, model:str) -> str:
     return response.message.content
 
 def run_model(model: str, df: pd.DataFrame):
-    with open(f"res_{model.replace(":","_")}.csv", "w") as file:
+    with open(f"res_{model.replace(":","_")}.csv", "w+") as file:
         file.write(f"{model},\n")
 
         for row in df.iterrows():
             question = row[1]["Question"]
             available_answers = row[1]["Possible Answers"]
+            correct_answer = row[1]["Answer"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             print(message)
-            ai_reply = askQuestion(msg=message, model=model)
-            file.write(f"res_{ai_reply},\n")
-        file.flush()
+            ai_reply = askQuestion(msg=message, model=model).replace("\n", " ")
+            print(ai_reply)
+            file.write(f"{ai_reply},")
+            file.write(str(compare_answers(ai_reply,correct_answer)))
+            file.write("\n")
+            file.flush()
+
 
 
 
@@ -86,6 +93,3 @@ if __name__ == "__main__":
         
         #print(askQuestion("What color is the sky?", models_list[0]))
 """
-    ans = askQuestion("Beräkna värdet av (2/3) / (4/9).",models_list[0])
-    
-    print(ans)
