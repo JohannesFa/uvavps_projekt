@@ -44,10 +44,29 @@ def askQuestion(question:str, model:str) -> str:
     ,
     {
         'role': 'user',
-        'content': question,
+        'content': message,
     },
     ])
     return response.message.content
+
+def run_model(model: str, df: pd.DataFrame):
+    with open(f"{model}.csv", "w") as f:
+        f.write(f"{model},\n")
+
+    for row in df.iterrows():
+        question = row[1]["Question"]
+        available_answers = row[1]["Possible Answers"]
+        message = f" Question : {question}, Alternatives: {available_answers}"
+        ai_reply = askQuestion(question=message, model=model)
+        with open(f"{model}.csv", "a") as f:
+            f.write(f"{ai_reply},\n")
+
+run_model(questionsdf)
+
+
+
+    
+
 
 
 
