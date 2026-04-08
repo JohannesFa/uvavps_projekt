@@ -6,7 +6,7 @@ models_list = ['falcon3:1b', 'qwen3.5:0.8b']
 systemprompt = open("systemprompt.txt", "r").readlines()
 questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
-def compareAnswers(model_reply:str, expected_answer:str):
+def compare_answers(model_reply:str, expected_answer:str):
     if "Answer:" in model_reply:
         model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
         print(f"Model answer is {model_answer} expected is {expected_answer}")
