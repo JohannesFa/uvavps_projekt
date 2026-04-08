@@ -50,7 +50,7 @@ def askQuestion(msg:str, model:str) -> str:
     return response.message.content
 
 def run_model(model: str, df: pd.DataFrame):
-    file = open(f"{model}.csv", "w")
+    file = open(f"res_{model}.csv", "w")
     file.write(f"{model},\n")  
 
     for row in df.iterrows():
@@ -58,7 +58,7 @@ def run_model(model: str, df: pd.DataFrame):
         available_answers = row[1]["Possible Answers"]
         message = f" Question : {question}, Alternatives: {available_answers}"
         ai_reply = askQuestion(msg=message, model=model)
-        file.write(f"{ai_reply},\n")
+        file.write(f"res_{model},\n")
     file.close()
 
 
