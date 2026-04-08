@@ -1,10 +1,11 @@
 import ollama
 from ollama import chat, ChatResponse
 import pandas as pd
+from pandas import DataFrame
 
 models_list = ['falcon3:1b', 'qwen3.5:0.8b']
 systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
-questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+questionsdf: DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
 def compare_answers(model_reply:str, expected_answer:str):
     if "answer:" in model_reply.lower():
@@ -38,7 +39,7 @@ def check_if_models_exist(model_list: list) :
 
 def askQuestion(msg:str, model:str) -> str:
     global systemprompt
-    response: ChatResponse = chat(model=model, think='low', messages=[
+    response: ChatResponse = chat(model=model, messages=[
     {
         'role': 'system',
         'content': systemprompt
@@ -51,7 +52,11 @@ def askQuestion(msg:str, model:str) -> str:
     ])
     return response.message.content
 
-def run_model(model: str, df: pd.DataFrame):
+def test_all_models(models_list: list, df : DataFrame) :
+    for model in models_list:
+        run_model(model, df)
+
+def run_model(model: str, df: DataFrame):
     with open(f"res_{model.replace(":","_")}.csv", "w+") as file:
         file.write(f"{model},\n")
 
@@ -80,9 +85,9 @@ if __name__ == "__main__":
 
     check_if_models_exist(models_list)
 
-    questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+    questionsdf: DataFrame = pd.read_csv("questions.csv",delimiter=";")
     
-    run_model(models_list[1],questionsdf)
+    run_model(models_list[0],questionsdf)
     """
     for row in questionsdf.iterrows():
         #print(row)
