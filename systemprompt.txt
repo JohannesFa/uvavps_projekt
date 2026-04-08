@@ -1,0 +1,1 @@
+Your task is to solve the question that the user asks. The question has four answers, {A,B,C,D}. You should answer in the format Answer:X where is X is one of the possible answers {A,B,C or D}
