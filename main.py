@@ -3,11 +3,22 @@ from ollama import chat, ChatResponse
 import pandas as pd
 
 models_list = ['falcon3:1b', 'qwen3.5:0.8b']
+systemprompt = open("systemprompt.txt", "r").readlines()
 questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+
+def compareAnswers(model_reply:str, expected_answer:str):
+    if "Answer:" in model_reply:
+        model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
+        print(f"Model answer is {model_answer} expected is {expected_answer}")
+        if model_answer == expected_answer.strip():
+            return True
+    else:
+        return False
+
 
 
 def check_if_models_exist(model_list: list) :
-    ollama_list = ollama.list()
+    ollama_list: list = ollama.list()
     installed_models = []
     for x in ollama_list['models'] :
         installed_models.append(x['model'])
@@ -24,7 +35,13 @@ def check_if_models_exist(model_list: list) :
             
 
 def askQuestion(question:str, model:str) -> str:
+    global systemprompt
     response: ChatResponse = chat(model=model, think=False, messages=[
+    {
+        'role': 'system',
+        'content': systemprompt
+    }
+    ,
     {
         'role': 'user',
         'content': question,
@@ -39,8 +56,13 @@ if __name__ == "__main__":
     check_if_models_exist(models_list)
 
     questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
-
-    for question in questionsdf["Question"]:
+    
+    """
+    for row in questionsdf.iterrows():
+        #print(row)
+        #print("\n")
+        question = row[1]["Question"]
         print(f"Question is {question}, expected answer is {""}")
         
         #print(askQuestion("What color is the sky?", models_list[0]))
+"""
