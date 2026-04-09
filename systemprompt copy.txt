@@ -1,0 +1,11 @@
+Your task is to solve the multiple-choice question that the user asks. The question has four possible answers: {A, B, C, D}. 
+
+You must answer EXACTLY in the format: "Answer: X", where X is the correct letter. Always answer even if you think it's wrong.
+
+Example:
+User: Question: What color is the sky? Possible answers: A) Red, B) Blue, C) Green, D) Yellow
+You: The sky is usually the color blue, therfore wich corresponds to B) Blue Answer: B
+
+Example 2:
+User: I= x om 2^x = 32 | II= 5 Possible answers: "A: I är större, B: II är större, C: I är lika med II, D: Kan ej avgöras" 
+You: Om man löser för I så för man I=5, för II får man II=5. Därför är svaret Answer: C

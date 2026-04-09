@@ -2,17 +2,17 @@ import ollama
 from ollama import Client
 import pandas as pd
 import re
+from tqdm import tqdm
 
 client = Client(host="127.0.0.1:11434")
 
-models_list = ['falcon3:1b', 'qwen3.5:0.8b']
+models_list = ['falcon3:1b', 'qwen3.5:0.8b', 'gemma4:e2b']
 systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
-questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
 def compare_answers(model_reply:str, expected_answer:str):
     if "answer:" in model_reply.lower():
         model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
-        print(f"Model answer is {model_answer} expected is {expected_answer}")
+        #tqdm.write(f"Model answer is {model_answer} expected is {expected_answer}")
         if model_answer == expected_answer.strip():
             return True
         else:
@@ -23,7 +23,7 @@ def compare_answers(model_reply:str, expected_answer:str):
 
 
 def check_if_models_exist(model_list: list) :
-    ollama_list: list = client.list()
+    ollama_list = client.list()
     installed_models = []
     for x in ollama_list['models'] :
         installed_models.append(x['model'])
@@ -41,7 +41,7 @@ def check_if_models_exist(model_list: list) :
 
 def askQuestion(msg:str, model:str) -> str:
     global systemprompt
-    response = client.chat(model=model, think='low', messages=[
+    response = client.chat(model=model, think=False, options={'num_ctx': 8192, 'num_predict': 2048}, messages=[
     {
         'role': 'system',
         'content': systemprompt
@@ -52,26 +52,30 @@ def askQuestion(msg:str, model:str) -> str:
         'content': msg,
     },
     ])
-    return response.message.content
+    if type(response.message.construct) != None:
+        return response.message.content
+    else:
+        return ""
 
-def test_all_models(models_list: list, df : DataFrame) :
-    for model in models_list:
+def test_all_models(models_list: list, df : pd.DataFrame) :
+    for model in tqdm(models_list):
         run_model(model, df)
 
-def run_model(model: str, df: DataFrame):
-    with open(f"res_{model.replace(":","_")}.csv", "w+") as file:
-        file.write(f"{model},\n")
+def run_model(model: str, df: pd.DataFrame):
+    with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig') as file:
+        file.write(f"sep=;\nModel_correct;Model_answer\n")
 
-        for row in df.iterrows():
+        for row in tqdm(df.iterrows(),total=len(df), desc=model):
             question = row[1]["Question"]
             available_answers = row[1]["Possible Answers"]
             correct_answer = row[1]["Answer"]
             message = f" Question : {question}, Possible answers: {available_answers}"
-            print(message)
-            ai_reply = askQuestion(msg=message, model=model).replace("\n", " ")
-            print(ai_reply)
-            file.write(f"{ai_reply},")
-            file.write(str(compare_answers(ai_reply,correct_answer)))
+            #tqdm.write(message)
+            ai_reply = askQuestion(msg=message, model=model).replace("\n", " ").replace(";",",").strip()choco
+            #tqdm.write(f"{ai_reply=}")
+            compared = str(compare_answers(ai_reply,correct_answer))
+            file.write(f"{compared};")
+            file.write(f"{ai_reply}")
             file.write("\n")
             file.flush()
 
@@ -87,9 +91,10 @@ if __name__ == "__main__":
 
     check_if_models_exist(models_list)
 
-    questionsdf: DataFrame = pd.read_csv("questions.csv",delimiter=";")
+    questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
     
-    run_model(models_list[0],questionsdf)
+    test_all_models(models_list,questionsdf)
+    #run_model(models_list[2],questionsdf)
     """
     for row in questionsdf.iterrows():
         #print(row)
