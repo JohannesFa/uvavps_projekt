@@ -86,11 +86,14 @@ def run_model(model: str, df: pd.DataFrame):
 
 if __name__ == "__main__":
 
-    check_if_models_exist(models_list)
+    #check_if_models_exist(models_list)
 
-    questions_df: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+   #questions_df: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+
+    sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','correct_answer','domain']]
+
     
-    test_all_models(models_list,questions_df)
+    #test_all_models(models_list,questions_df)
     #run_model(models_list[2],questions_df)
     """
     for row in questionsdf.iterrows():
