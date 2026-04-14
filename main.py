@@ -1,15 +1,12 @@
-from email import message
-
 import ollama
 from ollama import Client
 import pandas as pd
-from pandas.core import missing
 from tqdm import tqdm
 
 client = Client(host="127.0.0.1:11434")
 
 models_list = ['falcon3:1b', 'qwen3.5:0.8b', 'gemma4:e2b']
-systemprompt = "\n".join(open("systemprompt.txt", "r").readlines())
+system_prompt = "\n".join(open("systemprompt.txt", "r").readlines())
 
 def compare_answers(model_reply:str, expected_answer:str):
     if "answer:" in model_reply.lower():
@@ -39,12 +36,11 @@ def check_if_models_exist(model_list: list) :
         exit()
             
 
-def ask_question(msg:str, model:str) -> str:
-    global systemprompt
+def ask_question(msg:str, model:str, sys_prompt:str) -> str:
     response = client.chat(model=model, think=False, options={'num_ctx': 8192, 'num_predict': 2048}, messages=[
     {
         'role': 'system',
-        'content': systemprompt
+        'content': sys_prompt
     }
     ,
     {
@@ -68,13 +64,14 @@ def run_model(model: str, df: pd.DataFrame):
             correct_answer = row[1]["correct_answer"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
-            ai_reply = ask_question(msg=message, model=model).replace("\n", " ").replace(";",",").strip()
+            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
             #tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
             file.write(f"{compared};")
             file.write(f"{ai_reply}")
             file.write("\n")
             file.flush()
+        file.close()
 
 
 
@@ -92,9 +89,10 @@ if __name__ == "__main__":
 
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
 
+    print(sat_questions)
     
-    #test_all_models(models_list,questions_df)
-    #run_model(models_list[2],questions_df)
+    #test_all_models(models_list,hp_questions)
+    #run_model(models_list[2],hp_questions)
     """
     for row in questionsdf.iterrows():
         #print(row)
