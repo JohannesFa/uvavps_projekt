@@ -56,7 +56,7 @@ def test_all_models(models: list, df : pd.DataFrame) :
 
 def run_model(model: str, df: pd.DataFrame):
     with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig') as file:
-        file.write(f"sep=;\nModel_correct;Model_answer\n")
+        file.write("Model_correct;Model_answer\n")
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
             question = row[1]["Question"]
