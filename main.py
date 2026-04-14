@@ -59,9 +59,9 @@ def run_model(model: str, df: pd.DataFrame):
         file.write("Model_correct;Model_answer\n")
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
-            question = row[1]["Question"]
-            available_answers = row[1]["Possible Answers"]
-            correct_answer = row[1]["Answer"]
+            question = row[1]["question"]
+            available_answers = row[1]["choice_A"] + row[1]["choice_B"] + row[1]["choice_C"] + row[1]["choice_D"]
+            correct_answer = row[1]["correct_answer"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
             ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
@@ -85,9 +85,10 @@ if __name__ == "__main__":
 
     #check_if_models_exist(models_list)
 
-   #hp_questions: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+   #questions_df: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
+
     print(sat_questions)
     
     #test_all_models(models_list,hp_questions)
