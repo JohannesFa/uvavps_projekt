@@ -7,4 +7,6 @@ def total_percentage_correct(filename: str):
     df = pd.read_csv(filename, sep=";")
     return df['Model_correct'].mean() * 100
 
-
+def percentage_each_domain(filename: str):
+    df = pd.read_csv(filename)
+    df.groupby("Domain")[df["Model_correct"] == True]
