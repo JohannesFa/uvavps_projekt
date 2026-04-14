@@ -10,7 +10,7 @@ system_prompt = "\n".join(open("systemprompt.txt", "r").readlines())
 
 def compare_answers(model_reply:str, expected_answer:str):
     if "answer:" in model_reply.lower():
-        model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
+        model_answer = model_reply.lower().split("answer:")[1].strip()[:1].strip()
         #tqdm.write(f"Model answer is {model_answer} expected is {expected_answer}")
         return model_answer == expected_answer.strip()
     else:
