@@ -1,7 +1,9 @@
+from email import message
+
 import ollama
 from ollama import Client
 import pandas as pd
-import re
+from pandas.core import missing
 from tqdm import tqdm
 
 client = Client(host="127.0.0.1:11434")
@@ -13,10 +15,7 @@ def compare_answers(model_reply:str, expected_answer:str):
     if "answer:" in model_reply.lower():
         model_answer = model_reply.split("Answer:")[1].strip()[:1].strip()
         #tqdm.write(f"Model answer is {model_answer} expected is {expected_answer}")
-        if model_answer == expected_answer.strip():
-            return True
-        else:
-            return False
+        return model_answer == expected_answer.strip()
     else:
         return False
 
@@ -27,19 +26,20 @@ def check_if_models_exist(model_list: list) :
     installed_models = []
     for x in ollama_list['models'] :
         installed_models.append(x['model'])
-
-
     found_not_installed_model = False
+    missing_models = []
     for model in model_list:
         if model not in installed_models:
             print(f"Model {model} not installed or misspelled")
+            missing_models.append(model)
             found_not_installed_model = True
+
     if found_not_installed_model:
-        print("Exiting beacuse all models not installed")
+        print(f"Exiting because all models not installed \n The following models weren't found: \n {missing_models}")
         exit()
             
 
-def askQuestion(msg:str, model:str) -> str:
+def ask_question(msg:str, model:str) -> str:
     global systemprompt
     response = client.chat(model=model, think=False, options={'num_ctx': 8192, 'num_predict': 2048}, messages=[
     {
@@ -52,13 +52,10 @@ def askQuestion(msg:str, model:str) -> str:
         'content': msg,
     },
     ])
-    if type(response.message.construct) != None:
-        return response.message.content
-    else:
-        return ""
+    return getattr(response.message,'content',"")
 
-def test_all_models(models_list: list, df : pd.DataFrame) :
-    for model in tqdm(models_list):
+def test_all_models(models: list, df : pd.DataFrame) :
+    for model in tqdm(models):
         run_model(model, df)
 
 def run_model(model: str, df: pd.DataFrame):
@@ -71,7 +68,7 @@ def run_model(model: str, df: pd.DataFrame):
             correct_answer = row[1]["Answer"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
-            ai_reply = askQuestion(msg=message, model=model).replace("\n", " ").replace(";",",").strip()choco
+            ai_reply = ask_question(msg=message, model=model).replace("\n", " ").replace(";",",").strip()
             #tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
             file.write(f"{compared};")
@@ -91,10 +88,10 @@ if __name__ == "__main__":
 
     check_if_models_exist(models_list)
 
-    questionsdf: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+    questions_df: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
     
-    test_all_models(models_list,questionsdf)
-    #run_model(models_list[2],questionsdf)
+    test_all_models(models_list,questions_df)
+    #run_model(models_list[2],questions_df)
     """
     for row in questionsdf.iterrows():
         #print(row)
