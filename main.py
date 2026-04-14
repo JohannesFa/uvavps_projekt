@@ -56,19 +56,21 @@ def test_all_models(models: list, df : pd.DataFrame) :
 
 def run_model(model: str, df: pd.DataFrame):
     with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig') as file:
-        file.write("Model_correct;Model_answer\n")
+        file.write("Model_correct;Model_answer;Domain\n")
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
             question = row[1]["question"]
-            available_answers = row[1]["choice_A"] + row[1]["choice_B"] + row[1]["choice_C"] + row[1]["choice_D"]
+            available_answers = f"{row[1]["choice_A"]} {row[1]["choice_B"]} {row[1]["choice_C"]} {row[1]["choice_D"]}"
             correct_answer = row[1]["correct_answer"]
+            domain = row[1]["domain"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
             ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
             #tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
             file.write(f"{compared};")
-            file.write(f"{ai_reply}")
+            file.write(f"{ai_reply};")
+            file.write(f"{domain}")
             file.write("\n")
             file.flush()
         file.close()
