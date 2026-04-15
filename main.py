@@ -27,7 +27,6 @@ def check_if_models_exist(model_list: list) :
     missing_models = []
     for model in model_list:
         if model not in installed_models:
-            print(f"Model {model} not installed or misspelled")
             missing_models.append(model)
             found_not_installed_model = True
 
@@ -85,15 +84,13 @@ def run_model(model: str, df: pd.DataFrame):
 
 if __name__ == "__main__":
 
-    #check_if_models_exist(models_list)
+    check_if_models_exist(models_list)
 
-   #questions_df: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
+    hp_questions: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
-
-    print(sat_questions)
     
-    #test_all_models(models_list,hp_questions)
+    test_all_models(models_list,hp_questions)
     #run_model(models_list[2],hp_questions)
     """
     for row in questionsdf.iterrows():
