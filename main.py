@@ -2,6 +2,7 @@ import ollama
 from ollama import Client
 import pandas as pd
 from tqdm import tqdm
+import time
 
 client = Client(host="127.0.0.1:11434")
 
@@ -55,7 +56,7 @@ def test_all_models(models: list, df : pd.DataFrame) :
 
 def run_model(model: str, df: pd.DataFrame):
     with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig') as file:
-        file.write("Model_correct;Model_answer;Domain\n")
+        file.write("Model_correct;Model_answer;Domain;Time taken\n")
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
             question = row[1]["question"]
@@ -64,12 +65,15 @@ def run_model(model: str, df: pd.DataFrame):
             domain = row[1]["domain"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
+            start_time = time.perf_counter()
             ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
+            end_time = time.perf_counter()
             #tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
             file.write(f"{compared};")
             file.write(f"{ai_reply};")
             file.write(f"{domain}")
+            file.write(f"{end_time - start_time};")
             file.write("\n")
             file.flush()
         file.close()
