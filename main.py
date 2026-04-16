@@ -3,6 +3,7 @@ from ollama import Client
 import pandas as pd
 from tqdm import tqdm
 import time
+import csv
 
 client = Client(host="127.0.0.1:11434")
 
@@ -10,10 +11,12 @@ models_list = ['falcon3:1b', 'qwen3.5:0.8b', 'gemma4:e2b']
 system_prompt = "\n".join(open("systemprompt.txt", "r").readlines())
 
 def compare_answers(model_reply:str, expected_answer:str):
-    if "answer:" in model_reply.lower():
-        model_answer = model_reply.lower().split("answer:")[1].strip()[:1].strip()
+    reply = model_reply.lower()
+    if "answer:" in reply:
+        last_answer = reply.rsplit("answer:", maxsplit=1)
+        answer = last_answer[1].strip()[:1]
         #tqdm.write(f"Model answer is {model_answer} expected is {expected_answer}")
-        return model_answer == expected_answer.strip()
+        return answer == expected_answer.strip().lower()
     else:
         return False
 
@@ -55,28 +58,31 @@ def test_all_models(models: list, df : pd.DataFrame) :
         run_model(model, df)
 
 def run_model(model: str, df: pd.DataFrame):
-    with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig') as file:
-        file.write("Model_correct;Model_answer;Domain;Time taken\n")
+    with open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig', newline='') as file:
+        headers = ['Model_correct', 'Model_answer','Domain','Time taken']
+        writer = csv.writer(file, delimiter='|')
+        writer.writerow(headers)
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
             question = row[1]["question"]
-            available_answers = f"{row[1]["choice_A"]} {row[1]["choice_B"]} {row[1]["choice_C"]} {row[1]["choice_D"]}"
+            available_answers = f"A: {row[1]["choice_A"]} B: {row[1]["choice_B"]} C: {row[1]["choice_C"]} D: {row[1]["choice_D"]}"
             correct_answer = row[1]["correct_answer"]
             domain = row[1]["domain"]
             message = f" Question : {question}, Possible answers: {available_answers}"
             tqdm.write(message)
             start_time = time.perf_counter()
-            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
+            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").replace('|', ':').strip()
             end_time = time.perf_counter()
             tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
-            file.write(f"{compared};")
-            file.write(f"{ai_reply};")
-            file.write(f"{domain};")
-            file.write(f"{end_time - start_time};")
-            file.write("\n")
+            next_line = [
+                compared,
+                ai_reply,
+                domain,
+                end_time - start_time
+            ]
+            writer.writerow(next_line)
             file.flush()
-        file.close()
 
 
 
@@ -95,7 +101,7 @@ if __name__ == "__main__":
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
     
     #test_all_models(models_list,hp_questions)
-    run_model(models_list[0],sat_questions)
+    run_model(models_list[1],sat_questions)
     """
     for row in questionsdf.iterrows():
         #print(row)
