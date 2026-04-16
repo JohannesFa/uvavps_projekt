@@ -64,15 +64,15 @@ def run_model(model: str, df: pd.DataFrame):
             correct_answer = row[1]["correct_answer"]
             domain = row[1]["domain"]
             message = f" Question : {question}, Possible answers: {available_answers}"
-            #tqdm.write(message)
+            tqdm.write(message)
             start_time = time.perf_counter()
             ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").strip()
             end_time = time.perf_counter()
-            #tqdm.write(f"{ai_reply=}")
+            tqdm.write(f"{ai_reply=}")
             compared = str(compare_answers(ai_reply,correct_answer))
             file.write(f"{compared};")
             file.write(f"{ai_reply};")
-            file.write(f"{domain}")
+            file.write(f"{domain};")
             file.write(f"{end_time - start_time};")
             file.write("\n")
             file.flush()
@@ -88,14 +88,14 @@ def run_model(model: str, df: pd.DataFrame):
 
 if __name__ == "__main__":
 
-    check_if_models_exist(models_list)
+    #check_if_models_exist(models_list)
 
     hp_questions: pd.DataFrame = pd.read_csv("questions.csv",delimiter=";")
 
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
     
-    test_all_models(models_list,hp_questions)
-    #run_model(models_list[2],hp_questions)
+    #test_all_models(models_list,hp_questions)
+    run_model(models_list[0],sat_questions)
     """
     for row in questionsdf.iterrows():
         #print(row)
