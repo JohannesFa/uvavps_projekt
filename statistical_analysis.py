@@ -13,7 +13,7 @@ def total_percentage_correct(filename: str):
 
 def percentage_each_domain(filename: str):
     df = pd.read_csv(filename)
-    return df.groupby("Domain")["Model Correct"].mean() * 100
+    return df.groupby('Domain')['Model Correct'].mean() * 100
 
 def total_percentage_of_all_models():
     file_names = os.listdir(path='.')
@@ -25,11 +25,21 @@ def total_percentage_of_all_models():
             df.loc[model_name] = {'Mean': total_percentage_correct(x)}
     return df
 
+def percentage_each_domain_of_all_models():
+    file_names = os.listdir(path='.')
+    df = pd.DataFrame()
+    for x in file_names:
+        if x.startswith('res_'):
+            model_name = x.replace('res_', '').replace('.csv','')
+            if len(df.columns) == 0:
+                df = pd.DataFrame(columns=list(pd.read_csv(x).groupby('Domain').groups.keys()))
+            df.loc[model_name] = percentage_each_domain(x)
+    return df.transpose()
+
 def plot_graph(df: pd.DataFrame):
-    df.plot()
+    df.plot(ylim=(0, 100))
     plt.show()
 
 
-print(total_percentage_of_all_models())
-
+plot_graph(total_percentage_of_all_models())
 
