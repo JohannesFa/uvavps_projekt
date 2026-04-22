@@ -96,7 +96,7 @@ def test_all_models(models: list, df : pd.DataFrame) :
         run_model(model, df)
 
 def run_model(model: str, df: pd.DataFrame):
-    with open(f"res_{model.replace(":","_").replace("/","_")}.csv", "w+", encoding='utf-8-sig', newline='') as file:
+    with (open(f"res_{model.replace(":","_")}.csv", "w+", encoding='utf-8-sig', newline='') as file):
         headers = ['Model Correct','Parsed Answer', 'Whole Answer','Domain','Time taken']
         writer = csv.writer(file, delimiter='|')
         writer.writerow(headers)
@@ -109,7 +109,8 @@ def run_model(model: str, df: pd.DataFrame):
             message = f" Question : {question}, Possible answers: {available_answers}"
             tqdm.write(message)
             start_time = time.perf_counter()
-            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt).replace("\n", " ").replace(";",",").replace('|', ':').strip()
+            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt)
+            clean_reply =  ai_reply.replace("\n", " ").replace(";",",").replace('|', ':').strip()
             end_time = time.perf_counter()
             tqdm.write(f"{ai_reply=}")
             extracted_answer, correct = compare_answers(ai_reply,correct_answer)

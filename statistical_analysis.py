@@ -37,9 +37,10 @@ def percentage_each_domain_of_all_models():
     return df.transpose()
 
 def plot_graph(df: pd.DataFrame):
-    df.plot(ylim=(0, 100))
+    df.plot()
     plt.show()
 
 
-plot_graph(total_percentage_of_all_models())
+print(total_percentage_of_all_models())
+
 
