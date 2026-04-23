@@ -91,7 +91,7 @@ def check_if_models_exist(model_list: list) :
             
 
 
-def test_all_models(models: list, df : pd.DataFrame) :
+def test_all_models(models: list, df : pd.DataFrame):
     for model in tqdm(models):
         run_model(model, df)
 
