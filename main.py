@@ -1,5 +1,5 @@
 from urllib import response
-from openai import OpenAI
+from openai import OpenAI, BadRequestError
 
 import ollama
 from ollama import Client
@@ -102,17 +102,27 @@ def run_model(model: str, df: pd.DataFrame):
         writer.writerow(headers)
 
         for row in tqdm(df.iterrows(),total=len(df), desc=model):
+            
             question = row[1]["question"]
             available_answers = f"A: {row[1]["choice_A"]} B: {row[1]["choice_B"]} C: {row[1]["choice_C"]} D: {row[1]["choice_D"]}"
             correct_answer = row[1]["correct_answer"]
             domain = row[1]["domain"]
             message = f" Question : {question}, Possible answers: {available_answers}"
-            tqdm.write(message)
+            #tqdm.write(message)
             start_time = time.perf_counter()
-            ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt)
+            while True:
+                try:
+                    ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt)
+                    break
+                except BadRequestError as e:
+                    print("Request failed")
+                time.sleep(2)
+
+                
+
             clean_reply =  ai_reply.replace("\n", " ").replace(";",",").replace('|', ':').strip()
             end_time = time.perf_counter()
-            tqdm.write(f"{clean_reply=}")
+            #tqdm.write(f"{clean_reply=}")
             extracted_answer, correct = compare_answers(ai_reply,correct_answer)
             next_line = [
                 str(correct),
@@ -141,7 +151,12 @@ if __name__ == "__main__":
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
     
     #test_all_models(models_list,hp_questions)
-    run_model(models_list[0],sat_questions)
+    #nvidia/nemotron-3-nano-4b openai/gpt-oss-20b qwen/qwen3.5-9b "mistralai/ministral-3-3b", "google/gemma-3-12b","qwen/qwen3-1.7b","llama-3.2-1b-instruct"qwen/qwen3-14b","qwen/qwen3-4b","google/gemma-4-e2b",["google/gemma-3n-e4b",
+    test_all_models(["qwen/qwen3.6-35b-a3b",
+    "google/gemma-4-31b",
+    "google/gemma-4-26b-a4b",
+    "qwen/qwen3.5-35b-a3b"],sat_questions)
+
     """
     for row in questionsdf.iterrows():
         #print(row)
