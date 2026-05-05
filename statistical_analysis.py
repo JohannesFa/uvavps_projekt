@@ -97,7 +97,7 @@ if __name__ == "__main__":
 
     model_metrics_df["Param Size"] = model_metrics_df['Model Name'].apply(extract_size)
 
-    model_metrics_df = model_metrics_df.sort_values("param_size")
+    model_metrics_df = model_metrics_df.sort_values("Param Size")
 
     pd.set_option("display.max_columns", None)
     pd.set_option("display.width", None)
