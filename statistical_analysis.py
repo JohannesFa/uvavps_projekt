@@ -109,7 +109,7 @@ if __name__ == "__main__":
     expanded_df["All Mean"] = model_metrics_df["All Mean"]
     expanded_df.index = model_metrics_df.index
 
-    print(expanded_df)
+    #print(expanded_df)
     
     ax = expanded_df.plot(kind="bar")
     ax.set_xticks(range(-1, len(expanded_df)-1))
@@ -117,5 +117,16 @@ if __name__ == "__main__":
     plt.tight_layout()
     plt.show()   
 
-    print(model_metrics_df["Param Size"])
+
+    print(expanded_df)
+
+    expanded_df["Param Size"] = model_metrics_df["Param Size"]
+    plt.plot(model_metrics_df["Param Size"], expanded_df["All Mean"])
+    plt.plot(model_metrics_df["Param Size"], expanded_df["Advanced Math"])
+    plt.plot(model_metrics_df["Param Size"], expanded_df["Algebra"])
+    plt.plot(model_metrics_df["Param Size"], expanded_df["Geometry and Trigonometry"])
+    plt.plot(model_metrics_df["Param Size"], expanded_df["Problem-Solving and Data Analysis"])
+    plt.show()
+
+
 
