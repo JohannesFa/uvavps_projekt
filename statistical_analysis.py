@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import scipy.stats as stats
 import re
 from pandas.compat.numpy.function import MEAN_DEFAULTS
+from pandas.core.accessor import Accessor
 
 """
 def total_percentage_correct(filename: str):
@@ -82,10 +83,13 @@ if __name__ == "__main__":
     #print(total_percentage_of_all_models())
 
     model_metrics_df = pd.DataFrame(dict_list)
+    model_metrics_df.set_index('Model_name', inplace=True)
 
     pd.set_option("display.max_columns", None)
     pd.set_option("display.width", None)
     pd.set_option("display.max_rows", None)
     pd.set_option('display.max_colwidth', None)
-    print(model_metrics_df.to_string())
-    plot_graph(model_metrics_df)
+    ax = model_metrics_df.plot(kind='line', figsize=(10,5))
+    ax.set_xticks(range(0,18))
+    ax.set_xticklabels(model_metrics_df.index, rotation=45, ha='right')
+    plt.show()
