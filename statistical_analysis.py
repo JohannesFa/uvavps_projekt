@@ -114,6 +114,7 @@ if __name__ == "__main__":
     ax = expanded_df.plot(kind="bar")
     ax.set_xticks(range(-1, len(expanded_df)-1))
     ax.set_xticklabels(expanded_df.index, rotation=45)
+    ax.set_ylabel('Percentage of Correct By Domain')
     plt.tight_layout()
     plt.show()   
 
@@ -127,6 +128,8 @@ if __name__ == "__main__":
     plt.plot(model_metrics_df["Param Size"], expanded_df["Geometry and Trigonometry"])
     plt.plot(model_metrics_df["Param Size"], expanded_df["Problem-Solving and Data Analysis"])
     plt.show()
+
+
 
 
 
