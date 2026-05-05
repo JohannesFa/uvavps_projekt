@@ -3,10 +3,7 @@ import os
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.stats as stats
 import re
-from pandas.compat.numpy.function import MEAN_DEFAULTS
-from pandas.core.accessor import Accessor
 
 """
 def total_percentage_correct(filename: str):
@@ -89,21 +86,17 @@ if __name__ == "__main__":
     correct_by_domain_list = []
 
     for model_index, model_df in enumerate(models_df_list):
-        #print(model_df)
         model_name = model_names[model_index].lstrip('res_').rstrip('.csv')
         model_mean = model_df['Model Correct'].mean()*100
         correct_by_domain = model_df.groupby('Domain')['Model Correct'].mean() * 100
         correct_by_domain_list.append(correct_by_domain)
 
         dict_list.append({"Model_name": model_name,"Correct_by_domain":correct_by_domain, "All_Mean":model_mean})
-    #print(total_percentage_of_all_models())
 
     model_metrics_df = pd.DataFrame(dict_list)
-    model_metrics_df.set_index('Model_name', inplace=True)
+    print(model_metrics_df)
 
-    model_metrics_df["param_size"] = (
-    model_metrics_df["Model_name"].apply(extract_size)
-    )
+    model_metrics_df["param_size"] = model_metrics_df['Model_name'].apply(extract_size)
 
     model_metrics_df = model_metrics_df.sort_values("param_size")
 
@@ -111,7 +104,6 @@ if __name__ == "__main__":
     pd.set_option("display.width", None)
     pd.set_option("display.max_rows", None)
     pd.set_option('display.max_colwidth', None)
-    #print(model_metrics_df.to_string())
 
     model_metrics_df = model_metrics_df.set_index("Model_name")
     expanded_df = model_metrics_df["Correct_by_domain"].apply(pd.Series)
