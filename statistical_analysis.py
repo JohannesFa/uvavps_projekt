@@ -45,7 +45,7 @@ def get_all_models_df():
     
     result_files = []
     for file in files:
-        if re.search('res_.*\\.csv',file):
+        if re.search('res-.*\\.csv',file):
             result_files.append(file)
     
     pd_list = []
@@ -127,6 +127,7 @@ if __name__ == "__main__":
     plt.plot(model_metrics_df["Param Size"], expanded_df["Algebra"])
     plt.plot(model_metrics_df["Param Size"], expanded_df["Geometry and Trigonometry"])
     plt.plot(model_metrics_df["Param Size"], expanded_df["Problem-Solving and Data Analysis"])
+    plt.xscale("log")
     plt.show()
 
 
