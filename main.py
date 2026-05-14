@@ -110,10 +110,18 @@ def run_model(model: str, df: pd.DataFrame):
             message = f" Question : {question}, Possible answers: {available_answers}"
             #tqdm.write(message)
             start_time = time.perf_counter()
+            trycounter = 0
             while True:
                 try:
                     ai_reply = ask_question(msg=message, model=model, sys_prompt=system_prompt)
-                    break
+                    if ai_reply == "":
+                        if trycounter > 10:
+                            break
+                        else:
+                            trycounter += 1
+                            continue
+                    else:
+                        break
                 except BadRequestError as e:
                     print("Request failed")
                 time.sleep(2)
@@ -151,12 +159,10 @@ if __name__ == "__main__":
     sat_questions: pd.DataFrame = pd.read_csv("sat_questions.csv")[['question','choice_A','choice_B','choice_C','choice_D','correct_answer','domain']]
     
     #test_all_models(models_list,hp_questions)
-    #nvidia/nemotron-3-nano-4b openai/gpt-oss-20b qwen/qwen3.5-9b "mistralai/ministral-3-3b", "google/gemma-3-12b","qwen/qwen3-1.7b","llama-3.2-1b-instruct"qwen/qwen3-14b","qwen/qwen3-4b","google/gemma-4-e2b",["google/gemma-3n-e4b",
-    test_all_models(["qwen/qwen3.6-35b-a3b",
-    "google/gemma-4-31b",
-    "google/gemma-4-26b-a4b",
-    "qwen/qwen3.5-35b-a3b"],sat_questions)
-
+    #nvidia/nemotron-3-nano-4b openai/gpt-oss-20b qwen/qwen3.5-9b "mistralai/ministral-3-3b", "google/gemma-3-12b","qwen/qwen3-1.7b","llama-3.2-1b-instruct"qwen/qwen3-14b","qwen/qwen3-4b","google/gemma-4-e2b",["google/gemma-3n-e4b","qwen/qwen3.6-35b-a3b","google/gemma-4-31b","google/gemma-4-26b-a4b","qwen/qwen3.5-35b-a3b", "google/gemma-4-e2b","qwen/qwen3-4b","qwen/qwen3-8b",
+    test_all_models(["google/gemma-4-31b","google/gemma-4-26b-a4b","qwen/qwen3.5-35b-a3b"],sat_questions)
+    #
+    #["qwen/qwen3.5-9b"
     """
     for row in questionsdf.iterrows():
         #print(row)
